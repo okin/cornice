@@ -76,10 +76,18 @@ def to_list(obj):
     return obj
 
 
+class BytesEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, bytes):
+            return o.decode()
+
+        return super(BytesEncoder, self).default(o)
+
+
 class _JSONError(exc.HTTPError):
     def __init__(self, errors, status=400):
         body = {'status': 'error', 'errors': errors}
-        Response.__init__(self, json.dumps(body))
+        Response.__init__(self, json.dumps(body, cls=BytesEncoder))
         self.status = status
         self.content_type = 'application/json'
 
