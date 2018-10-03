@@ -56,8 +56,6 @@ class _JsonRenderer(object):
         # rather fragile patching of instance properties.
         if renderer_factory.serializer == json.dumps:
             renderer_factory.serializer = simplejson.dumps
-        if 'use_decimal' not in renderer_factory.kw:
-            renderer_factory.kw['use_decimal'] = True
         renderer = renderer_factory(None)
 
         # XXX This call has the side effect of potentially setting the
