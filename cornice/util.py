@@ -81,7 +81,7 @@ def to_list(obj):
 class _JSONError(exc.HTTPError):
     def __init__(self, errors, status=400):
         body = {'status': 'error', 'errors': errors}
-        Response.__init__(self, simplejson.dumps(body, use_decimal=True))
+        Response.__init__(self, simplejson.dumps(body))
         self.status = status
         self.content_type = 'application/json'
 
