@@ -77,11 +77,16 @@ def to_list(obj):
 
 
 class BytesEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, bytes):
-            return o.decode()
+    @staticmethod
+    def _decode_byte(b):
+        return b.decode()
 
-        return super(BytesEncoder, self).default(o)
+    def default(self, o):
+        transform_function = super(BytesEncoder, self).default
+        if isinstance(o, bytes):
+            transform_function = self._decode_byte
+
+        return transform_function(o)
 
 
 class _JSONError(exc.HTTPError):
