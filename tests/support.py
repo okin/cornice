@@ -4,12 +4,7 @@
 import logging
 import logging.handlers
 import weakref
-
-try:
-    from unittest2 import TestCase
-except ImportError:
-    # Maybe we're running in python2.7?
-    from unittest import TestCase  # NOQA
+from unittest import TestCase  # NOQA
 
 from webob.dec import wsgify
 from webob import exc
