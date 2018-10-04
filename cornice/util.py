@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 import warnings
 
+import functools
 import json
 
 from pyramid import httpexceptions as exc
@@ -46,6 +47,11 @@ class _JsonRenderer(object):
         # Serialise the ``data`` object to a JSON string using the
         # JSON renderer registered with Pyramid.
         renderer_factory = registry.queryUtility(IRendererFactory, name='json')
+
+        if renderer_factory.serializer == json.dumps:
+            patched_dumps = functools.partial(json.dumps,
+                                              cls=BytesEncoder)
+            renderer_factory.serializer = patched_dumps
 
         renderer = renderer_factory(None)
 
