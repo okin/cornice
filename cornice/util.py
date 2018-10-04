@@ -4,7 +4,6 @@
 import warnings
 
 import json
-import simplejson
 
 from pyramid import httpexceptions as exc
 from pyramid.compat import string_types
@@ -48,14 +47,6 @@ class _JsonRenderer(object):
         # JSON renderer registered with Pyramid.
         renderer_factory = registry.queryUtility(IRendererFactory, name='json')
 
-        # XXX Patched with ``simplejson.dumps(..., use-decimal=True)``
-        # if the renderer has been configured to serialise using just
-        # ``json.dumps(...)``.  This maintains backwards compatibility
-        # with the Cornice renderer, whilst allowing Pyramid renderer
-        # configuration via ``add_adapter`` calls, at the price of
-        # rather fragile patching of instance properties.
-        if renderer_factory.serializer == json.dumps:
-            renderer_factory.serializer = simplejson.dumps
         renderer = renderer_factory(None)
 
         # XXX This call has the side effect of potentially setting the
